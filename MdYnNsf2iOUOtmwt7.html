@@ -1,0 +1,158 @@
+<html><head><base href="https://websim.io/temperature/"><title>Elegant Temperature Converter</title>
+<style>
+:root {
+  --primary: #2a6592;
+  --secondary: #f0f4f8;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+}
+
+.converter {
+  background: black;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  width: 90%;
+  max-width: 400px;
+}
+
+h1 {
+  color: var(--primary);
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+}
+
+.input-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+input {
+  width: 100%;
+  padding: 0.8rem;
+  border: 2px solid var(--secondary);
+  border-radius: 8px;
+  font-size: 1.1rem;
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  outline: block-axis;
+  border-color: var(--primary);
+}
+
+.result {
+  background: var(--secondary);
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--primary);
+  min-height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.result.animated {
+  animation: pulse 0.5s ease-out;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.temperature-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 1rem;
+  display: block;
+}
+</style>
+</head>
+<body>
+<div class="converter">
+  <svg class="temperature-icon" viewBox="0 0 24 24">
+    <path fill="var(--primary)" d="M12,2A3,3 0 0,1 15,5V11.17C16.17,12.17 17,13.5 17,15A5,5 0 0,1 12,20A5,5 0 0,1 7,15C7,13.5 7.83,12.17 9,11.17V5A3,3 0 0,1 12,2M12,4A1,1 0 0,0 11,5V12H9V15A3,3 0 0,0 12,18A3,3 0 0,0 15,15V12H13V5A1,1 0 0,0 12,4Z"/>
+  </svg>
+  
+  <h1>Temperature Converter</h1>
+  
+  <div class="input-group">
+    <label for="celsius">Celsius (°C)</label>
+    <input type="number" id="celsius" placeholder="Enter temperature in Celsius">
+  </div>
+  
+  <div class="input-group">
+    <label for="fahrenheit">Fahrenheit (°F)</label>
+    <input type="number" id="fahrenheit" placeholder="Enter temperature in Fahrenheit">
+  </div>
+  
+  <div class="result" id="result">Convert temperature by entering a value above</div>
+</div>
+
+<script>
+const celsiusInput = document.getElementById('celsius');
+const fahrenheitInput = document.getElementById('fahrenheit');
+const resultDiv = document.getElementById('result');
+
+function convertCtoF(celsius) {
+  return (celsius * 9/5) + 32;
+}
+
+function convertFtoC(fahrenheit) {
+  return (fahrenheit - 32) * 5/9;
+}
+
+function animateResult() {
+  resultDiv.classList.add('animated');
+  setTimeout(() => resultDiv.classList.remove('animated'), 500);
+}
+
+celsiusInput.addEventListener('input', (e) => {
+  if (e.target.value === '') {
+    resultDiv.textContent = 'Convert temperature by entering a value above';
+    fahrenheitInput.value = '';
+    return;
+  }
+  
+  const celsius = parseFloat(e.target.value);
+  const fahrenheit = convertCtoF(celsius);
+  fahrenheitInput.value = fahrenheit.toFixed(2);
+  resultDiv.textContent = `${celsius}°C = ${fahrenheit.toFixed(2)}°F`;
+  animateResult();
+});
+
+fahrenheitInput.addEventListener('input', (e) => {
+  if (e.target.value === '') {
+    resultDiv.textContent = 'Convert temperature by entering a value above';
+    celsiusInput.value = '';
+    return;
+  }
+  
+  const fahrenheit = parseFloat(e.target.value);
+  const celsius = convertFtoC(fahrenheit);
+  celsiusInput.value = celsius.toFixed(2);
+  resultDiv.textContent = `${fahrenheit}°F = ${celsius.toFixed(2)}°C`;
+  animateResult();
+});
+</script>
+</body></html>
